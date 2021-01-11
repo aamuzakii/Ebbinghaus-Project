@@ -80,16 +80,7 @@
 
 
 const todayReviewList = document.querySelector(".today-review-list");
-
-
-// function showList() {
-//     todaysReview.forEach(function(todo){
-//         const newLi = document.createElement("li");  
-//         newLi.classList.add("list-group-item");
-//         newLi.innerText = todo;
-//         todayReviewList.appendChild(newLi);
-//     })   
-// }
+const accordionContainer = document.querySelector(".accordion-flush");
 
 
 
@@ -102,10 +93,14 @@ const getDB = (response) => {
         json.forEach(function(element){
             let id, title, body, reviewdate;
             ({ id, title, body, reviewdate } = element);
-            const newLi = document.createElement("li");  
-            newLi.classList.add("list-group-item");
-            newLi.innerText = title;
-            todayReviewList.appendChild(newLi);
+         
+// ini
+            const accordionItem = document.createElement('div');
+            accordionItem.classList.add('accordion-item')
+            accordionItem.innerHTML = `<h2 class="accordion-header" id="flush-heading-${id}"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-${id}One" aria-expanded="false" aria-controls="flush-collapse-${id}One">${title}</button></h2><div id="flush-collapse-${id}One" class="accordion-collapse collapse" aria-labelledby="flush-heading-${id}" data-bs-parent="#accordionFlushExample"><div class="accordion-body">${body}</div></div>`;
+            accordionContainer.appendChild(accordionItem);
+            
+
         })
     }); 
 

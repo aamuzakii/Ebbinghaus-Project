@@ -27,21 +27,90 @@ const makeDate = (lesson) => {
 
     addOneDayObject = new Date(year, monthNumber, addOneDay, hour, minute, second);
     addOneDayJSON = addOneDayObject.toString();
-    console.log(addOneDayJSON);
+
+    // Add 7 Days
+    let jenisBulan;
+    switch(monthNumber) {
+        case "Jan":
+            jenisBulan = 31;
+            break;
+        case "Feb":
+            jenisBulan = 28 
+            break;
+        case "Mar":
+            jenisBulan = 31 
+            break;
+        case "Apr":
+            jenisBulan = 30 
+            break;
+        case "May":
+            jenisBulan = 31 
+            break;
+        case "Jun": 
+            jenisBulan = 30 
+            break;
+        case "Jul":
+            jenisBulan = 31 
+            break;
+        case "Aug":
+            jenisBulan = 31 
+            break;
+        case "Sep":
+            jenisBulan = 30 
+            break;
+        case "Oct":
+            jenisBulan = 31 
+            break;
+        case "Nov":
+            jenisBulan = 30 
+            break;
+        case "Dec":
+            jenisBulan = 31
+            break;
+        default:
+            jenisBulan = "monthNum typo"           
+    }
+
+    let currentDatePlusSeven
+
+    if(parsedDay+7 > jenisBulan){
+        currentDatePlusSeven = parsedDay+ 7 - jenisBulan;
+        monthNumber = monthNumber + 1;
+    } else {
+        currentDatePlusSeven = parsedDay +7
+    }
+
+    nextWeekReviewObject = new Date(year, monthNumber, currentDatePlusSeven, hour, minute, second);
+    nextWeekReviewJSON = nextWeekReviewObject.toString();
+
+    // One Months Review
+    currentMonthPlusOne = monthNumber + 1;
+    nextMonthReviewObject = new Date(year, currentMonthPlusOne, parsedDay, hour, minute, second);
+    nextMonthReviewJSON = nextMonthReviewObject.toString();
+    
+
+    // Three Months Review
+    currentMonthPlusThree = monthNumber + 3;
+    nextThreeMonthReviewObject = new Date(year, currentMonthPlusThree, parsedDay, hour, minute, second);
+    nextThreeMonthReviewJSON = nextThreeMonthReviewObject.toString();
 }
 
 const submitLesson = (e) => {
     e.preventDefault();
     makeDate();
-    postToDB(lessonContent.value, addOneDayJSON);
+    postToDB(lessonTitle.value, lessonContent.value, addOneDayJSON);
+    postToDB(lessonTitle.value, lessonContent.value, nextWeekReviewJSON);    
+    postToDB(lessonTitle.value, lessonContent.value, nextMonthReviewJSON);    
+    postToDB(lessonTitle.value, lessonContent.value, nextThreeMonthReviewJSON);    
+
     lessonContent.value = "";
-    console.log(lessonTitle.value)  
+    lessonTitle.value = "";
 }
 
 
 
-const postToDB = (body, reviewdate) => {
-    const data = {title:'judul', body: body, reviewdate: reviewdate};
+const postToDB = (title, body, reviewdate) => {
+    const data = {title: title, body: body, reviewdate: reviewdate};
 
     fetch('http://localhost:3000/addlist', {
     method: 'POST', 

@@ -93,12 +93,26 @@ const makeDate = (lesson) => {
     currentMonthPlusThree = monthNumber + 3;
     nextThreeMonthReviewObject = new Date(year, currentMonthPlusThree, parsedDay, hour, minute, second);
     nextThreeMonthReviewJSON = nextThreeMonthReviewObject.toString();
+
+    // One Hour Review
+    if(hour > 23){
+        // Case kalau dia input misal 23.30
+        // 23.30 + 01.00 = 24.30 bakal eror
+        plusOneHourReviewObject = new Date(year, monthNumber, addOneDay, 1, minute, second); 
+        plusOneHourReviewJSON = plusOneHourReviewObject.toString();              
+    } else {
+        plusOneHour = hour + 1;
+        plusOneHourReviewObject = new Date(year, monthNumber, parsedDay, plusOneHour, minute, second); 
+        plusOneHourReviewJSON = plusOneHourReviewObject.toString();  
+        console.log(plusOneHourReviewJSON)
+    }
 }
 
 const submitLesson = (e) => {
     e.preventDefault();
     makeDate();
     postToDB(lessonTitle.value, lessonContent.value, addOneDayJSON);
+    postToDB(lessonTitle.value, lessonContent.value, plusOneHourReviewJSON);
     postToDB(lessonTitle.value, lessonContent.value, nextWeekReviewJSON);    
     postToDB(lessonTitle.value, lessonContent.value, nextMonthReviewJSON);    
     postToDB(lessonTitle.value, lessonContent.value, nextThreeMonthReviewJSON);    
